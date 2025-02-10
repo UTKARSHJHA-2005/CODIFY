@@ -1,16 +1,21 @@
-import http from "http";
-import express from "express";
-import fetch from "node-fetch";
-import { Server } from "socket.io";
-import cors from "cors";
+import http from "http"; // Creates http server (for socket.io).
+import express from "express"; // Handles http server.
+import { Server } from "socket.io"; // Enables real-time communication.
+import cors from "cors"; // Allows requests from frontent hosted.
 const app = express();
+
+// Enables CORS to enable communcation between frontend and backend.
 app.use(cors());
 app.use(cors({
     origin: "http://localhost:5173",
 }));
-app.use(express.json());
-const server = http.createServer(app);
-const io = new Server(server, {
+
+app.use(express.json());// Parses incoming JSON requests.
+
+const server = http.createServer(app); // Wraps Express with an HTTP server.
+
+// Initializes Socket.io with CORS to allow WebSocket connections from frontend.
+const io = new Server(server, { 
     cors: {
         origin: "http://localhost:5173",
         methods: ["GET", "POST"],
@@ -18,7 +23,10 @@ const io = new Server(server, {
         credentials: true,
     },
 });
-const usersocketmap = {};
+
+const usersocketmap = {};// Stores usernames mapped to their socket id.
+
+// Retrieves all connected users in the room by converting socket id to array and maps to their username. 
 function getallclient(roomid) {
     return Array.from(io.sockets.adapter.rooms.get(roomid) || []).map((socketid) => {
         return {
@@ -27,11 +35,16 @@ function getallclient(roomid) {
         };
     });
 }
+
+// New websocket connection.
 io.on("connection", (socket) => {
     console.log("Socket Connected:", socket.id);
+    // Working of socket when room joins.
     socket.on('join', ({ roomid, username }) => {
+        // Stores the username in usersocketmap as socket id as key and user joins the room.
         usersocketmap[socket.id] = username;
         socket.join(roomid);
+        // Fetches all connected users and notifies in the room.
         const clients = getallclient(roomid);
         console.log(clients);
         io.to(roomid).emit('joined', {
@@ -40,18 +53,22 @@ io.on("connection", (socket) => {
             socketid: socket.id,
         });
     });
+    // Working of socket when room leaves.
     socket.on('leave', ({ roomid }) => {
         socket.leave(roomid);
-        delete usersocketmap[socket.id];
+        delete usersocketmap[socket.id];// Deletes the user from usersocketmap.
+        // Broadcasts the user lists after the user list and notifies in the room.
         const clients = getallclient(roomid);
         io.to(roomid).emit('left', {
             username: usersocketmap[socket.id],
             clients,
         });
     });
+    // When one user changes code, broadcasts it to everyone in the room.
     socket.on('code_change', ({ roomid, code }) => {
         socket.broadcast.to(roomid).emit('code_change', { code });
     });
+    // Ensures the user leaves all rooms when they disconnect or deleted from the usersocketmap.
     socket.on('disconnect', () => {
         for (let roomid of Object.keys(socket.rooms)) {
             socket.leave(roomid);
@@ -60,54 +77,6 @@ io.on("connection", (socket) => {
     });
 });
 
-// app.post('/analyze-code', async (req, res) => {
-//     const code = req.body;
-//     console.log("Received code:", code);
-
-//     if (!code) {
-//         return res.status(400).json({ error: "Code is required" });
-//     }
-
-//     try {
-//         const apiKey = "AIzaSyCfU1mnmPjJ06bN2cZ-HJVBjr5titBlOyk";  
-//         const apiUrl = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro-001:generateText";
-//         const response = await fetch(apiUrl, {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 Authorization: `Bearer ${apiKey}`,
-//             },
-//             body: JSON.stringify({
-//                 model: "gemini-1.5-pro-001",
-//                 prompt: `Analyze the following JavaScript code:\n${code}`,
-//             }),
-//         });
-//         const rawData = await response.text(); 
-//         console.log("Raw response from Gemini API:", rawData);
-//         if (!response.ok) {
-//             throw new Error(`API request failed with status ${response.status}: ${rawData}`);
-//         }
-//         let parsedData;
-//         try {
-//             parsedData = JSON.parse(rawData);
-//         } catch (e) {
-//             console.error("Failed to parse response as JSON:", e);
-//             throw new Error("Invalid JSON response from Gemini API");
-//         }
-
-//         if (!parsedData || !parsedData.result) {
-//             throw new Error("Invalid response format from Gemini API");
-//         }
-
-//         res.json({ result: parsedData.result });
-
-//     } catch (error) {
-//         console.error("Error analyzing code:", error);
-//         res.status(500).json({ error: error.message || "Internal server error" });
-//     }
-// });
-
-
-
+// Starts the server on port 3000.
 const PORT = 3000;
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));

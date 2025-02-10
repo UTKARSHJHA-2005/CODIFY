@@ -1,7 +1,7 @@
 import './App.css'
-import Home from './pages/Home'
-import Editor from './pages/Editor'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Home from './pages/Home'; // Home Page
+import Editor from './pages/Editor'; // Code Collaboration page
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // For routing of pages
 
 function App() {
   return (

@@ -1,3 +1,4 @@
+// Initializes the socket connection for communication with a server.
 import { io } from "socket.io-client";
 
 export const initSock = (timeout = 50000) => {
