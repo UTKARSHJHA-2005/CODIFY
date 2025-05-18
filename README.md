@@ -1,4 +1,4 @@
-</> CODEITFY 🧑‍💻<br/>
+</> CODIFY 🧑‍💻<br/>
 A real-time collaborative code editor enhanced with AI-driven error solving, providing a seamless coding experience for both individual developers and teams.<br/>
 <br/>
 🌟 Key Features: 🌟<br/>
