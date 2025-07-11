@@ -255,7 +255,7 @@ function Sidebar() {
                         <img src={binary} alt="Binary Code" className="h-[50px] w-[120px] mx-auto mb-4" />
                     </div>
                     <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500">
-                        CODEITFY
+                        CODEIFY
                     </h1>
                 </div>
                 {/* AI Analysis Button */}
