@@ -7,7 +7,7 @@ const app = express();
 // Enables CORS to enable communcation between frontend and backend.
 app.use(cors());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://codify-blue.vercel.app/",
 }));
 
 app.use(express.json());// Parses incoming JSON requests.
@@ -17,7 +17,7 @@ const server = http.createServer(app); // Wraps Express with an HTTP server.
 // Initializes Socket.io with CORS to allow WebSocket connections from frontend.
 const io = new Server(server, { 
     cors: {
-        origin: "http://localhost:5173",
+        origin: "https://codify-blue.vercel.app/",
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type"],
         credentials: true,
