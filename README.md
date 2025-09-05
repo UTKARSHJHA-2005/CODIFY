@@ -42,7 +42,6 @@ Backend Setup: Socket Programming.
   cd frontend
   npm run dev
   ```
- <br/>
   (for backend) <br/>
   ```
   cd backend
