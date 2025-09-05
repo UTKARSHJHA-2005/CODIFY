@@ -32,9 +32,9 @@ Backend Setup: Socket Programming.
    ```
    <br/>
 3) Install Dependencies (for both backend and frontend) <br/>
-  ```
-  npm install
-  ```
+   ```
+   npm install
+   ```
   <br/>
 4) Run the server <br/>
   (for frontend)
@@ -42,6 +42,7 @@ Backend Setup: Socket Programming.
   cd frontend
   npm run dev
   ```
+ <br/>
   (for backend)
   ```
   cd backend
