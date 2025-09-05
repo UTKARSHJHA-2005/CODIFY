@@ -47,4 +47,4 @@ Backend Setup: Socket Programming.
   <pre>
   cd backend
   node ./server.js
-  </pre>pre>
+  </pre>
