@@ -1,7 +1,7 @@
 // This is the AI model which helps in analyzing the code
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 
-const apiKey = "AIzaSyCfU1mnmPjJ06bN2cZ-HJVBjr5titBlOyk"; // API Key
+const apiKey = process.env.GOOGLE_API_KEY; // API Key
 const genAI = new GoogleGenerativeAI(apiKey);
 
 // Details of the model to be used.
