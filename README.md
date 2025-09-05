@@ -37,13 +37,13 @@ Backend Setup: Socket Programming.
    ```
   <br/>
 4) Run the server <br/>
-  (for frontend)
+  (for frontend) <br/>
   ```
   cd frontend
   npm run dev
   ```
  <br/>
-  (for backend)
+  (for backend) <br/>
   ```
   cd backend
   node ./server.js
